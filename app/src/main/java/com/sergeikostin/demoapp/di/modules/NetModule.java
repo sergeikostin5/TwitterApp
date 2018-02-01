@@ -1,4 +1,4 @@
-package com.sergeikostin.demoapp.dagger.modules;
+package com.sergeikostin.demoapp.di.modules;
 
 import com.sergeikostin.demoapp.network.TwitterClient;
 import com.sergeikostin.demoapp.utils.JSONUtil;

@@ -4,9 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.sergeikostin.demoapp.dagger.ApplicationComponent;
-import com.sergeikostin.demoapp.dagger.DaggerApplicationComponent;
-import com.sergeikostin.demoapp.dagger.modules.ApplicationModule;
+import com.sergeikostin.demoapp.di.ApplicationComponent;
+import com.sergeikostin.demoapp.di.DaggerApplicationComponent;
+import com.sergeikostin.demoapp.di.modules.ApplicationModule;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;

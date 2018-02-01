@@ -7,12 +7,14 @@ import com.sergeikostin.demoapp.R;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private TimeLineFragment mTimeLineFragment;
+
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
 
         setContentView( R.layout.activity_main );
-
+        mTimeLineFragment = (TimeLineFragment) getSupportFragmentManager().findFragmentById( R.id.home_timeline_fragment );
     }
 
 

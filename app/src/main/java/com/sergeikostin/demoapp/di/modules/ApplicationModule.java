@@ -1,4 +1,4 @@
-package com.sergeikostin.demoapp.dagger.modules;
+package com.sergeikostin.demoapp.di.modules;
 
 import android.app.Application;
 import android.content.Context;

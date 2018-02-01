@@ -2,6 +2,7 @@ package com.sergeikostin.demoapp.feature.home_timeline;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,27 +14,19 @@ import android.view.ViewGroup;
 import com.sergeikostin.demoapp.MyApplication;
 import com.sergeikostin.demoapp.R;
 import com.sergeikostin.demoapp.TweetsAdapter;
-import com.sergeikostin.demoapp.dao.TwitterDao;
 import com.sergeikostin.demoapp.model.Tweet;
-import com.sergeikostin.demoapp.utils.JSONUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimeLineFragment extends Fragment {
+public class TimeLineFragment extends Fragment implements TimeLineView {
 
-    @Inject TwitterDao mTwitterDao;
-    @Inject JSONUtil mJSONUtil;
+    @Inject TimeLineViewPresenter mTimeLinePresenter;
 
     private RecyclerView mTweetsRV;
     private TweetsAdapter mTweetsAdapter;
@@ -41,43 +34,40 @@ public class TimeLineFragment extends Fragment {
 
     public TimeLineFragment() {
         MyApplication.getApplication().getAppComponent().inject(this);
+        Log.d("TimeLineFragment Bingo ", "constructor");
+
     }
 
+    @Override public void onCreate( @Nullable Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setRetainInstance( true );
+        Log.d("TimeLineFragment Bingo ", "onCreate");
+        mTweets = new ArrayList<>(  );
+        mTimeLinePresenter.populateTimeline();
+    }
 
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState ) {
         // Inflate the layout for this fragment
         View view = inflater.inflate( R.layout.fragment_time_line, container, false );
+        mTimeLinePresenter.setView( this );
 
         mTweetsRV = view.findViewById( R.id.rvTweet );
-        mTweets = new ArrayList<>(  );
         mTweetsAdapter = new TweetsAdapter( mTweets );
         mTweetsRV.setAdapter( mTweetsAdapter );
         mTweetsRV.setLayoutManager( new LinearLayoutManager( getActivity().getApplicationContext() ) );
-        populateTimeline();
+        Log.d("TimeLineFragment Bingo ", "onCreateView");
         return view;
     }
 
-    private void populateTimeline() {
-        mTwitterDao.getHomeTimeline( new Callback() {
-            @Override public void onFailure( Call call, IOException e ) {
-                Log.d("Bingo onFailure", call + "  " + e.getMessage());
+    @Override
+    public void updateTimeLineTweets( final List<Tweet> tweets ) {
+        getActivity().runOnUiThread( new Runnable() {
+            @Override public void run() {
+                mTweets.addAll( tweets );
+                mTweetsAdapter.notifyDataSetChanged();
             }
-
-            @Override public void onResponse( Call call, final Response response ) throws IOException {
-                //
-                String jsonStirng = response.body().string();
-                Log.d("Bingo onResponse", response.code() + "  " + jsonStirng);
-                final List<Tweet> tweets = mJSONUtil.tweetsFromJson( jsonStirng);
-                getActivity().runOnUiThread( new Runnable() {
-                    @Override public void run() {
-                        mTweets.addAll( tweets);
-                        mTweetsAdapter.notifyDataSetChanged();
-                    }
-                } );
-            }
-        });
+        } );
     }
-
 }

@@ -18,6 +18,7 @@ public class TwitterDao {
     public static final String TWITTER_BASE_URL = "https://api.twitter.com/1.1";
     private static final String PATH_STATUSES = "statuses";
     private static final String PATH_HOME_TIMELINE_JSON = "home_timeline.json";
+    private static final String PATH_MENTIONS_TIMELINE_JSON = "mentions_timeline.json";
     private static final String KEY_COUNT = "count";
     private static final String KEY_SINCE_ID = "since_id";
 
@@ -29,10 +30,20 @@ public class TwitterDao {
         mClient.get(getHomeTimelineUri(), callback);
     }
 
+    public void getMentionsTimeline( Callback callback) {
+        mClient.get(getMentionsTimelineUri(), callback);
+    }
+
     private String getHomeTimelineUri() {
         return Uri.parse( TWITTER_BASE_URL ).buildUpon().appendPath( PATH_STATUSES ).appendPath( PATH_HOME_TIMELINE_JSON )
                 .appendQueryParameter(
                 KEY_COUNT, "20" ).appendQueryParameter( KEY_SINCE_ID, "1" ).build().toString();
+    }
+
+    private String getMentionsTimelineUri() {
+        return Uri.parse( TWITTER_BASE_URL ).buildUpon().appendPath( PATH_STATUSES ).appendPath( PATH_MENTIONS_TIMELINE_JSON )
+                .appendQueryParameter(
+                        KEY_COUNT, "20" ).appendQueryParameter( KEY_SINCE_ID, "1" ).build().toString();
     }
 
 }
