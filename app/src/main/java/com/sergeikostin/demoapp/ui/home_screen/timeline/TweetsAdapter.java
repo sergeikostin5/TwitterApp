@@ -1,4 +1,4 @@
-package com.sergeikostin.demoapp;
+package com.sergeikostin.demoapp.ui.home_screen.timeline;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sergeikostin.demoapp.TweetsAdapter.ViewHolder;
-import com.sergeikostin.demoapp.dao.ImageDao;
+import com.sergeikostin.demoapp.MyApplication;
+import com.sergeikostin.demoapp.R;
+import com.sergeikostin.demoapp.ui.home_screen.timeline.TweetsAdapter.ViewHolder;
+import com.sergeikostin.demoapp.network.ImageDao;
 import com.sergeikostin.demoapp.model.Tweet;
 
 import java.util.List;

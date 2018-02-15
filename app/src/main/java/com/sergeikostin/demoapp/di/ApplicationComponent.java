@@ -1,21 +1,22 @@
 package com.sergeikostin.demoapp.di;
 
-import com.sergeikostin.demoapp.TweetsAdapter;
-import com.sergeikostin.demoapp.dao.TwitterDao;
 import com.sergeikostin.demoapp.di.modules.AndroidModule;
 import com.sergeikostin.demoapp.di.modules.ApplicationModule;
-import com.sergeikostin.demoapp.di.modules.DaoModule;
-import com.sergeikostin.demoapp.di.modules.NetModule;
+import com.sergeikostin.demoapp.di.modules.NetworkModule;
 import com.sergeikostin.demoapp.di.modules.PresenterModule;
-import com.sergeikostin.demoapp.feature.home_timeline.TimeLineFragment;
-import com.sergeikostin.demoapp.feature.home_timeline.TimeLineViewPresenter;
+import com.sergeikostin.demoapp.ui.home_screen.HomeActivity;
+import com.sergeikostin.demoapp.ui.home_screen.timeline.TimeLineFragment;
+import com.sergeikostin.demoapp.ui.home_screen.timeline.TimeLineViewPresenter;
+import com.sergeikostin.demoapp.ui.home_screen.timeline.TweetsAdapter;
+import com.sergeikostin.demoapp.ui.new_tweet_screen.NewTweetMvpView;
+import com.sergeikostin.demoapp.ui.new_tweet_screen.NewTweetPresenter;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, AndroidModule.class, DaoModule.class, NetModule.class, PresenterModule.class})
+@Component(modules = {ApplicationModule.class, AndroidModule.class, NetworkModule.class, PresenterModule.class})
 public interface ApplicationComponent {
 
     // defining injection targets here
@@ -25,6 +26,8 @@ public interface ApplicationComponent {
 
     void inject( TweetsAdapter adapter );
 
-    void inject( TwitterDao twitterDao );
+    void inject( NewTweetPresenter<NewTweetMvpView> presenter );
+
+    void inject( HomeActivity homeActivity );
 
 }

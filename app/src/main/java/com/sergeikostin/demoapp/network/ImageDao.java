@@ -1,4 +1,4 @@
-package com.sergeikostin.demoapp.dao;
+package com.sergeikostin.demoapp.network;
 
 import android.content.Context;
 import android.widget.ImageView;

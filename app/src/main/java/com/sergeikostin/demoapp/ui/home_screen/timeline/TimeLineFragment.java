@@ -1,4 +1,4 @@
-package com.sergeikostin.demoapp.feature.home_timeline;
+package com.sergeikostin.demoapp.ui.home_screen.timeline;
 
 
 import android.os.Bundle;
@@ -6,14 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sergeikostin.demoapp.MyApplication;
 import com.sergeikostin.demoapp.R;
-import com.sergeikostin.demoapp.TweetsAdapter;
 import com.sergeikostin.demoapp.model.Tweet;
 
 import java.util.ArrayList;
@@ -34,14 +32,11 @@ public class TimeLineFragment extends Fragment implements TimeLineView {
 
     public TimeLineFragment() {
         MyApplication.getApplication().getAppComponent().inject(this);
-        Log.d("TimeLineFragment Bingo ", "constructor");
-
     }
 
     @Override public void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setRetainInstance( true );
-        Log.d("TimeLineFragment Bingo ", "onCreate");
         mTweets = new ArrayList<>(  );
         mTimeLinePresenter.populateTimeline();
     }
@@ -57,17 +52,17 @@ public class TimeLineFragment extends Fragment implements TimeLineView {
         mTweetsAdapter = new TweetsAdapter( mTweets );
         mTweetsRV.setAdapter( mTweetsAdapter );
         mTweetsRV.setLayoutManager( new LinearLayoutManager( getActivity().getApplicationContext() ) );
-        Log.d("TimeLineFragment Bingo ", "onCreateView");
         return view;
+    }
+
+    @Override public void onDestroy() {
+        mTimeLinePresenter.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void updateTimeLineTweets( final List<Tweet> tweets ) {
-        getActivity().runOnUiThread( new Runnable() {
-            @Override public void run() {
                 mTweets.addAll( tweets );
                 mTweetsAdapter.notifyDataSetChanged();
-            }
-        } );
     }
 }

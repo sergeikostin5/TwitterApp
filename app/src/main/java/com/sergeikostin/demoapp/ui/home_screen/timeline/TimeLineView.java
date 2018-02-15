@@ -1,4 +1,4 @@
-package com.sergeikostin.demoapp.feature.home_timeline;
+package com.sergeikostin.demoapp.ui.home_screen.timeline;
 
 
 import com.sergeikostin.demoapp.model.Tweet;
