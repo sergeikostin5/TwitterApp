@@ -1,4 +1,4 @@
-package com.sergeikostin.demoapp.di;
+package com.sergeikostin.demoapp.di.components;
 
 import com.sergeikostin.demoapp.di.modules.AndroidModule;
 import com.sergeikostin.demoapp.di.modules.ApplicationModule;

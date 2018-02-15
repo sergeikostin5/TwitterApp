@@ -4,17 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.sergeikostin.demoapp.MyApplication;
 import com.sergeikostin.demoapp.R;
 import com.sergeikostin.demoapp.ui.home_screen.timeline.TimeLineFragment;
+import com.sergeikostin.demoapp.ui.mvp_core.BaseActivity;
 import com.sergeikostin.demoapp.ui.new_tweet_screen.NewTweetActivity;
 
 import javax.inject.Inject;
 
-public class HomeActivity extends AppCompatActivity implements HomeMvpView{
+public class HomeActivity extends BaseActivity implements HomeMvpView{
 
     private TimeLineFragment mTimeLineFragment;
     private FloatingActionButton mNewTweetButton;

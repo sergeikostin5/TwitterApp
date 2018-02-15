@@ -6,9 +6,16 @@ import android.util.Log;
 import com.sergeikostin.demoapp.ui.mvp_core.BasePresenter;
 import com.twitter.sdk.android.core.TwitterCore;
 
-public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V> {
+import javax.inject.Inject;
+
+public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V> implements SplashMvpPresenter<V>{
 
     private final int SPLASH_DISPLAY_LENGTH = 1000;
+
+    @Inject
+    public SplashPresenter(){
+        super();
+    }
 
     public void decideNextActivity() {
         new Handler().postDelayed( new Runnable(){

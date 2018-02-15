@@ -2,22 +2,26 @@ package com.sergeikostin.demoapp.ui.splash_screen;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.sergeikostin.demoapp.R;
 import com.sergeikostin.demoapp.ui.home_screen.HomeActivity;
 import com.sergeikostin.demoapp.ui.login_screen.LoginActivity;
+import com.sergeikostin.demoapp.ui.mvp_core.BaseActivity;
 
-public class SplashActivity extends AppCompatActivity implements SplashMvpView{
+import javax.inject.Inject;
 
-    SplashPresenter<SplashMvpView> mSplashPresenter;
+public class SplashActivity extends BaseActivity implements SplashMvpView{
+
+    @Inject
+    SplashMvpPresenter<SplashMvpView> mSplashPresenter;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_splash );
 
-        mSplashPresenter = new SplashPresenter<>();
+        getActivityComponent().inject(this);
+
         mSplashPresenter.onAttach( this );
         mSplashPresenter.decideNextActivity();
     }

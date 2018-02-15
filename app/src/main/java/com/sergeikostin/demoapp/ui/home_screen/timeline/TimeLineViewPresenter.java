@@ -50,7 +50,6 @@ public class TimeLineViewPresenter {
     }
 
     public void onDestroy() {
-        Log.d("Bingo", "onDestroy");
         if(mSubscription != null && !mSubscription.isUnsubscribed()){
             mSubscription.unsubscribe();
         }
