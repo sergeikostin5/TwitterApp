@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 
-import com.sergeikostin.demoapp.MyApplication;
 import com.sergeikostin.demoapp.R;
 import com.sergeikostin.demoapp.ui.home_screen.timeline.TimeLineFragment;
 import com.sergeikostin.demoapp.ui.mvp_core.BaseActivity;
@@ -30,7 +29,7 @@ public class HomeActivity extends BaseActivity implements HomeMvpView{
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         Log.d("Bingo", "HomeActivity " + Thread.currentThread());
-        MyApplication.getApplication().getAppComponent().inject(this);
+        getActivityComponent().inject(this);
         mHomePresenter.onAttach( this );
         setContentView( R.layout.activity_main );
         mTimeLineFragment = (TimeLineFragment) getSupportFragmentManager().findFragmentById( R.id.home_timeline_fragment );
@@ -41,5 +40,10 @@ public class HomeActivity extends BaseActivity implements HomeMvpView{
     @Override public void openNewTweetActivity() {
         Intent intent = NewTweetActivity.getStartIntent( this );
         startActivity( intent );
+    }
+
+    @Override protected void onDestroy() {
+        mHomePresenter.onDetach();
+        super.onDestroy();
     }
 }

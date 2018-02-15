@@ -9,6 +9,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.sergeikostin.demoapp.di.components.ActivityComponent;
 import com.sergeikostin.demoapp.utils.CommonUtils;
 
 public abstract class BaseFragment extends Fragment implements MvpView {
@@ -111,7 +112,12 @@ public abstract class BaseFragment extends Fragment implements MvpView {
         return mActivity;
     }
 
-
+    public ActivityComponent getActivityComponent() {
+        if (mActivity != null) {
+            return mActivity.getActivityComponent();
+        }
+        return null;
+    }
 
 
 

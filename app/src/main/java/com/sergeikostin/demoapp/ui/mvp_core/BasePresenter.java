@@ -8,6 +8,7 @@ import javax.inject.Inject;
  * can be accessed from the children classes by calling getMvpView().
  */
 public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
+    
 
     private V mMvpView;
 

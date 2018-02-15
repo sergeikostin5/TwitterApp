@@ -5,7 +5,7 @@ import com.sergeikostin.demoapp.ui.mvp_core.BasePresenter;
 
 import javax.inject.Inject;
 
-public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> {
+public class HomePresenter<V extends HomeMvpView> extends BasePresenter<V> implements HomeMvpPresenter<V>{
 
     @Inject
     public HomePresenter(){

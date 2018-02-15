@@ -10,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sergeikostin.demoapp.MyApplication;
 import com.sergeikostin.demoapp.R;
+import com.sergeikostin.demoapp.di.components.ActivityComponent;
 import com.sergeikostin.demoapp.model.Tweet;
+import com.sergeikostin.demoapp.ui.mvp_core.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,23 +23,25 @@ import javax.inject.Inject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimeLineFragment extends Fragment implements TimeLineView {
+public class TimeLineFragment extends BaseFragment implements TimeLineMvpView {
 
-    @Inject TimeLineViewPresenter mTimeLinePresenter;
+    @Inject TimeLineMvpPresenter<TimeLineMvpView> mTimeLinePresenter;
 
     private RecyclerView mTweetsRV;
     private TweetsAdapter mTweetsAdapter;
     private List<Tweet> mTweets;
 
-    public TimeLineFragment() {
-        MyApplication.getApplication().getAppComponent().inject(this);
-    }
-
     @Override public void onCreate( @Nullable Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setRetainInstance( true );
         mTweets = new ArrayList<>(  );
-        mTimeLinePresenter.populateTimeline();
+    }
+
+    @Override protected void setUp( View view ) {
+        mTweetsAdapter = new TweetsAdapter( mTweets );
+        mTweetsRV.setAdapter( mTweetsAdapter );
+        mTweetsRV.setLayoutManager( new LinearLayoutManager( getActivity().getApplicationContext() ) );
+        mTimeLinePresenter.onViewPrepared();
     }
 
     @Override
@@ -46,17 +49,19 @@ public class TimeLineFragment extends Fragment implements TimeLineView {
                               Bundle savedInstanceState ) {
         // Inflate the layout for this fragment
         View view = inflater.inflate( R.layout.fragment_time_line, container, false );
-        mTimeLinePresenter.setView( this );
+
+        ActivityComponent component = getActivityComponent();
+        if (component != null) {
+            component.inject(this);
+            mTimeLinePresenter.onAttach(this);
+        }
 
         mTweetsRV = view.findViewById( R.id.rvTweet );
-        mTweetsAdapter = new TweetsAdapter( mTweets );
-        mTweetsRV.setAdapter( mTweetsAdapter );
-        mTweetsRV.setLayoutManager( new LinearLayoutManager( getActivity().getApplicationContext() ) );
         return view;
     }
 
     @Override public void onDestroy() {
-        mTimeLinePresenter.onDestroy();
+        mTimeLinePresenter.onDetach();
         super.onDestroy();
     }
 

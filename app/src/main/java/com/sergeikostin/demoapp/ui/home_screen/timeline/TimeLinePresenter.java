@@ -6,6 +6,7 @@ import android.util.Log;
 import com.sergeikostin.demoapp.MyApplication;
 import com.sergeikostin.demoapp.model.Tweet;
 import com.sergeikostin.demoapp.network.TwitterApiEndpointService;
+import com.sergeikostin.demoapp.ui.mvp_core.BasePresenter;
 
 import java.util.List;
 
@@ -16,24 +17,21 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class TimeLineViewPresenter {
+public class TimeLinePresenter<V extends TimeLineMvpView> extends BasePresenter<V> implements TimeLineMvpPresenter<V>{
 
     @Inject TwitterApiEndpointService mTwitterService;
 
-    private TimeLineView mPresentersView;
-
     private Subscription mSubscription;
 
-    public TimeLineViewPresenter(){
-        MyApplication.getApplication().getAppComponent().inject( this );
+    @Inject
+    public TimeLinePresenter(){
+        MyApplication.getApplication().getAppComponent().inject( (TimeLinePresenter<TimeLineMvpView>) this );
     }
 
-    void setView(TimeLineView view){
-        mPresentersView = view;
-    }
+    @Override
+    public void onViewPrepared() {
 
-    void populateTimeline() {
-            mSubscription = mTwitterService.getHomeTimelineTweets().subscribeOn( Schedulers.io() ).observeOn( AndroidSchedulers.mainThread() ).
+        mSubscription = mTwitterService.getHomeTimelineTweets().subscribeOn( Schedulers.io() ).observeOn( AndroidSchedulers.mainThread() ).
                     subscribe( new Subscriber<List<Tweet>>() {
                 @Override public void onCompleted() {
 
@@ -43,15 +41,15 @@ public class TimeLineViewPresenter {
                     Log.e("Bingo ", "Error " + e.getCause() + e.getMessage());
                 }
 
-                @Override public void onNext( List<Tweet> tweets ) {
-                    mPresentersView.updateTimeLineTweets( tweets );
+                @Override public void onNext( List<Tweet> tweets ) { getMvpView().updateTimeLineTweets( tweets );
                 }
             } );
     }
 
-    public void onDestroy() {
+    @Override public void onDetach() {
         if(mSubscription != null && !mSubscription.isUnsubscribed()){
             mSubscription.unsubscribe();
         }
+        super.onDetach();
     }
 }

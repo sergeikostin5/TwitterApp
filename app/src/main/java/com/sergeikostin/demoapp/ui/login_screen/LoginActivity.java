@@ -3,20 +3,25 @@ package com.sergeikostin.demoapp.ui.login_screen;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.sergeikostin.demoapp.R;
 import com.sergeikostin.demoapp.ui.home_screen.HomeActivity;
+import com.sergeikostin.demoapp.ui.mvp_core.BaseActivity;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
-public class LoginActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+public class LoginActivity extends BaseActivity implements  LoginMvpView{
 
 	private TwitterLoginButton loginButton;
+
+	@Inject
+	LoginMvpPresenter<LoginMvpView> mPresenter;
 
 	public static Intent getStartIntent(Context context){
 		Intent intent = new Intent( context, LoginActivity.class );
@@ -27,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView( R.layout.activity_login);
+		getActivityComponent().inject( this );
+		mPresenter.onAttach( this );
 		loginButton = findViewById(R.id.login_button);
 		loginButton.setCallback(new Callback<TwitterSession>() {
 			@Override
